@@ -1,0 +1,298 @@
+<style>
+
+                .flex-container-villa{
+                  display: flex;
+                  background-color: #fefefe;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  gap: 20px;
+                  flex-wrap: wrap;
+                  align-content: space-around;
+                  border-style: solid;
+                  border-radius: 20px;
+                  margin-left: 600px;
+                  margin-right: 600px;
+                  padding-bottom: 40px;
+                  box-shadow: 5px 10px #888888;
+                }
+
+                .flex-container-villa>div{
+
+                  font-size: 50px;
+
+                  }
+ 
+                input[type="text"], select {
+                width: 300px;
+                height: 50px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+
+                input[type="submit"] {
+                width: 300px;
+                height: 50px;
+                background-color: #4CAF50;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                }
+
+                input[type="submit"]:hover {
+                width: 300px;
+                height: 50px;
+                background-color: #3e8e41;
+                }
+
+                #myBtn{
+
+              width: 300px;
+              height: 50px;
+              background-color: #4CAF50;
+              color: #fff;
+              padding: 10px 20px;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+
+              }
+        /*Modal*/
+
+         .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+                  /* Modal Content/Box */
+        .modal-content {
+          
+          margin: 15% auto; /* 15% from the top and centered */
+          padding: 20px;
+          
+          width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+        }
+</style>
+
+
+
+<h2>Villa Registration</h2>
+<button id="myBtn">Add Villa</button>
+<table id="villaTable" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Villa Name</th>
+            <th>Villa Status</th>
+        </tr>
+    </thead>
+    <tbody id="villaJsonTable">
+    </tbody>
+</table>
+
+<hr>
+
+<div id="myModal" class="modal">
+
+  <div class="modal-content">
+
+    
+
+        <form id="SubmitVilla">
+
+          
+
+
+          <div class="flex-container-villa">
+
+            <span class="close">&times;</span>
+
+
+            <div>
+              
+              <label for="villa_name">Villa Name</label>
+            
+            </div>
+            
+            <div>
+              
+              <input type="text" id="villa_name" name="villa_name">
+            
+            </div>
+            
+            <div>
+              
+              <label for="villa_status">Villa Status</label>
+            
+            </div>
+
+            <div>
+              
+              <select id="villa_status" name="villa_status">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select><br><br>
+            
+            </div>
+            
+          
+          
+            <div>
+
+              <input type="submit" value="Submit">
+
+            </div>
+            
+
+          </div>
+
+        </form>
+
+    </div>
+  </div>
+
+  <script>
+    $(document).on('submit', '#SubmitVilla', function(e){
+
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      object={}
+
+      var formData = new FormData(this);
+
+      formData.forEach((value, key) => object[key] = value);
+
+      var txt = JSON.stringify(object);
+
+      console.log(txt);
+
+      $.ajax({
+                    url:"http://localhost:7000/InsertVilla",
+                    type:"POST",
+                    data:txt,
+                    contentType:'application/json',
+                    success: function(data){
+                       
+                        console.log(data);
+                        $('#SubmitVilla')[0].reset();
+                        location.reload();
+                    },
+                    
+                    error: function(xhr, status, error){
+                        alert(error);
+                    }
+
+                })
+
+    });
+
+    
+
+  </script>
+
+ <script>
+  $(document).ready(function() {
+  var villaList = [];
+
+  $.ajax({
+    
+    url: "http://localhost:7000/villas", // Your server endpoint URL
+    method: "GET",
+    async: true,
+    success: function(data) {
+      const jsonData = data.villa// Parse the JSON string
+
+      $.each(jsonData, function(index, villa) {
+        villaList.push(villa);
+      });
+
+      console.log(villaList);
+
+      // Display the villa list in a loop using HTML
+      for (var i = 0; i < villaList.length; i++) {
+        var villa_name = villaList[i].villa_name;
+        var villa_status = villaList[i].villa_status;
+
+        console.log(villaList[i].villa_name);
+        console.log(villa_status);
+
+        var data_villa = `
+        <tr>
+
+          <td>${villa_name}</td>
+          <td>${villa_status}</td>
+          
+        </tr>
+        
+        `;
+
+        $('#villaJsonTable').append(data_villa);
+        
+      }
+
+      var villaView = new DataTable("#villaTable");
+    },
+    error: function(xhr, status, err) {
+      console.error('Error:', err);
+    }
+  });
+});
+
+
+ //modal JS
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+ </script> 
+
+

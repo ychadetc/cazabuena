@@ -1,0 +1,223 @@
+<html>
+    <head>
+
+        <style>
+             .flex-container-guest{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                border-style: solid;
+                border-radius: 20px;
+                gap: 20px;
+                flex-wrap: wrap;
+                align-content: space-around;
+                margin-left: 100px;
+                margin-right: 100px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                box-shadow: 5px 10px #888888;
+                
+                }
+
+                .flex-container-guest>div{
+
+                    font-size: 30px;
+
+                    }
+            
+                .row{
+                    display: flex;
+                }
+
+                .right{
+                    margin-left: 50px;
+                }
+
+                .guest{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    font-size: 60px;
+                }
+
+                .flex-form{
+                    display: flex;
+                    align-items: center;
+                    margin-top: 20px;
+                }
+        </style>
+
+
+
+
+    </head>
+    
+<title>Guest view</title>
+
+<body>
+
+    <h1 class="guest">Guest</h1>
+
+    <div class="flex-container-guest">
+        
+        
+
+        <div class="left">
+
+            <div class="row">
+                <div>Guest:</div> <div id="full_name"></div><br><br>
+            </div>
+            
+            <div class="row">
+                <div>Guest ID:</div> <div id="guest_id"></div><br><br>
+              </div>
+              
+              <div class="row">
+                <div>Transaction ID:</div> <div id="transaction_id2"></div><br><br>
+              </div>
+              
+              <div class="row">
+                <div>Package Availed:</div> <div id="package"></div><br><br>
+              </div>
+              
+              <div class="row">
+                <div>Guest Status:</div> <div id="guest_status"></div><br><br>
+              </div>
+
+        </div>
+
+        <div class="right">
+
+            <div class="row">
+                <div>Check In:</div> <div id="check_in_datetime"></div><br><br>
+              </div>
+
+            <div class="row">
+                <div>Check Out:</div> <div id="check_out_datetime"></div><br><br>
+              </div>
+              
+              <div class="row">
+                <div>Length of stay: </div> <div id="length_stay"></div><br><br>
+              </div>
+              
+              <div class="row">
+                <div>Current Bill:</div> <div id="currbill"></div><br><br>
+              </div>
+              
+              <div class="row">
+                <div>Current stay:</div> <div id="currstay"></div><br><br>
+              </div>
+
+        </div>
+
+    </div>
+
+        <input type="hidden" id="package2" name="package2">
+        <input type="hidden" id="transaction_update" name="transaction_update">
+
+
+<div class="flex-form">
+
+        <form id="UpdateGuest">
+            <input type="hidden" id="full_name2" name="full_name">
+            <input type="hidden" id="guest_id2" name="guest_id">
+            <input type="hidden" id="transaction_id2_2" name="transaction_id2_2">
+            <label>Update guest status</label>
+            <select id="guest_status2" name="guest_status2">
+                <option value="PENDING">PENDING</option>
+                <option value="CHECKED_IN">CHECK IN</option>
+                <option value="CHECKED_OUT">CHECK OUT</option>
+            </select>
+            <input type="submit" value="Submit">
+        </form>
+</div>
+
+        <button id="check_bill">Check Bill</button>
+        
+</body>
+
+    <script>
+        $(document).on('submit', '#UpdateGuest', function(e){
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            object={}
+
+            var formData = new FormData(this);
+
+            formData.forEach((value, key) => object[key] = value);
+
+            var txt = JSON.stringify(object);
+
+            console.log(txt);
+
+            $.ajax({
+                    url:"http://localhost:7000/UpdateGuestTable",
+                    type:"POST",
+                    data:txt,
+                    contentType:'application/json',
+                    success: function(data){
+                        //alert(data.message);
+                        //console.log(data);
+                        $('#UpdateGuest')[0].reset();
+                        //location.reload();
+                        //alert(data.message)
+                    },
+                    
+                    error: function(xhr, status, error){
+                        alert(error);
+                    }
+
+                })
+
+        });
+
+
+
+        $('#check_bill').on("click", function(e){
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            var package = $('#package2').val();
+            var transaction_id2= $('#transaction_update').val();
+            //alert(package);
+            var txt = JSON.stringify({"package":package, "transaction_id2":transaction_id2})
+
+            $.ajax({
+                url:"http://localhost:7000/UpdateBill",
+                type:"POST",
+                data:txt,
+                contentType:'application/json',
+                success:function(data1){
+                 var currList = [];
+
+                 const jsonData = data1.current_status;
+
+                 $.each(jsonData, function(index, currStats) {
+                    currList.push(currStats);
+                });
+
+                for (var i = 0; i < currList.length; i++) {
+                    var current_bill = currList[i].current_bill;
+                    var current_stay = currList[i].current_stay;
+
+                }
+
+              $("#currbill").html("₱"+current_bill);
+              $("#currstay").html(current_stay+" "+"Day/s");
+
+
+                },
+
+                error:function(xhr, status, error){
+                    alert(error);
+                }
+            });
+
+            //alert("it worked")
+
+        });
+    </script>
+</html>

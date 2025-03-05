@@ -1,0 +1,172 @@
+<head>
+
+    <style>
+
+        .flex-container{
+
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            
+            flex-wrap: wrap;
+            align-content: space-around;
+            border-style: solid;
+            border-radius: 20px;
+            margin-left: 300px;
+            margin-right: 200px;
+            padding-bottom: 40px;
+            padding-right: 300px;
+            padding-left: 300px;
+            box-shadow: 5px 10px #888888;
+           
+          
+            
+            
+        }
+
+        .flex-container>div{
+
+            font-size: 30px;
+
+        }
+
+        input[type="text"] {
+            width: 300px;
+            height: 50px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="email"] {
+            width: 300px;
+            height: 50px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="number"] {
+            width: 300px;
+            height: 50px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="submit"] {
+            width: 300px;
+            height: 50px;
+            background-color: #3e8e41;
+        }
+
+
+    </style>
+   
+</head>
+
+
+
+<body>
+
+        <form id="SubmitGuest">
+
+        
+
+                <div class="flex-container">
+
+                    <div>
+                        <h1>Guest Registration</h1>
+                    </div>
+
+                    
+
+                    <div>
+                            <label for="full_name">Full Name:</label>
+                    </div>
+
+                    <div>
+                            <input type="text" id="full_name" name="full_name">
+                    </div>
+
+                    <div>
+                            <label for="contact_number">Contact Number:</label>
+                    </div>
+
+                    <div>
+                            <input type="text" id="contact_number" name="contact_number">
+                    </div>
+
+                    <div>
+                        <label for="email">Email:</label>
+                    </div>
+                    
+                    <div>
+                        <input type="email" id="email" name="email">
+                    </div>
+
+                    <div>
+                        <label for="age">Age:</label>
+                    </div>
+                    
+                    <div>
+                        <input type="number" id="age" name="age">
+                    </div>
+
+                    <div>
+                        <input type="submit" value="Submit">
+                    </div>
+
+                </div>
+
+            
+        
+
+                    
+        </form>
+
+</body>
+
+<script>
+    $(document).on('submit', '#SubmitGuest', function(e){
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    object={}
+
+    var formData = new FormData(this);
+
+    formData.forEach((value, key) => object[key] = value);
+
+    var txt = JSON.stringify(object);
+
+    console.log(txt);
+
+
+    $.ajax({
+                    url:"http://localhost:7000/InsertGuest",
+                    type:"POST",
+                    data:txt,
+                    contentType:'application/json',
+                    success: function(data){
+                        alert(data.message);
+                        console.log(data);
+                        $('#SubmitGuest')[0].reset();
+                        location.reload();
+                    },
+                    
+                    error: function(xhr, status, error){
+                        alert(error);
+                    }
+
+                })
+
+  });
+
+
+</script>

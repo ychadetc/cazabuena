@@ -1,0 +1,596 @@
+
+<head>
+ <style>
+      
+      .flex-container-book{
+
+          display: flex;
+          background-color: #fefefe;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          gap: 20px;
+          flex-wrap: wrap;
+          align-content: space-evenly;
+          border-style: solid;
+          border-radius: 20px;
+          
+          padding-bottom: 40px;
+          box-shadow: 5px 10px #888888;
+          margin-left: 50px;
+          margin-right: 50px;
+
+      }
+
+      .flex-container-book>div{
+
+          font-size: 50px;
+
+      }
+
+ 
+       
+      input[type="text"], select {
+    width: 300px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="number"]{
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sr{
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="date"]{
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="time"]{
+    width: 300px;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="submit"] {
+    width: 300px;
+    height: 50px;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    }
+
+    #myBtn{
+
+    width: 300px;
+    height: 50px;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    }
+
+
+
+
+
+            /*Modal*/
+
+            /* The Modal (background) */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+          
+          margin: 15% auto; /* 15% from the top and centered */
+          padding: 20px;
+         
+          width: 80%; /* Could be more or less, depending on screen size */
+
+          
+        }
+
+        /* The Close Button */
+        .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+          color: black;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+    </style>
+ </style>
+</head>
+
+<h1>Guest booking</h1>
+
+<button id="myBtn">Add booking</button>
+
+
+<div id='calendar'></div>
+
+
+
+
+<table id="GuestTable" class="table table-striped table-bordered">
+  <thead>
+      <tr>
+          <th>Guest ID</th>
+          <th>Name</th>
+          <th>Check In</th>
+          <th>Check Out</th>
+          <th>Length of stay</th>
+          <th>Guest status</th>
+          <th>View guest</th>
+      </tr>
+  </thead>
+  <tbody id="guestBody">
+
+  </tbody>
+</table>
+
+<hr>
+
+<div id="myModal" class="modal">
+
+  <div class="modal-content">
+
+    
+
+      <form id="SubmitBooking">
+
+        <div class="flex-container-book">
+
+          <span class="close">&times;</span>
+      
+          <div class="flex-left-book">
+      
+              <label for="guest_id">Select Guest</label>
+              <select name="guest_id" id="guest_id">
+              </select><br><br>
+              
+              <label for="check_in_date">Check In Date:</label>
+              <input type="date" id="check_in_date" name="check_in_date"><br><br>
+      
+              <label for="check_in_time">Check In Time:</label>
+              <input type="time" id="check_in_time" name="check_in_time"><br><br>
+      
+              <label for="check_out_date">Check Out Date:</label>
+              <input type="date" id="check_out_date" name="check_out_date"><br><br>
+              
+              <label for="check_out_time">Check Out Time:</label>
+              <input type="time" id="check_out_time" name="check_out_time"><br><br> 
+      
+          </div>
+      
+          <div class="flex-right-book">
+      
+              <label for="no_pax">No. of Pax:</label>
+              <input type="number" id="no_pax" name="no_pax" onkeyup="checkInputNumber(this.value)"><br><br>
+              
+              <label for="package">Select Package: </label>
+              <select id="package" name="package">
+              </select><br><br>
+              
+              <label for="special_request">Special Request:</label>
+              <textarea name="special_request" id="special_request" class="sr"></textarea>
+      
+          </div>
+          
+          <input type="submit" value="Book Now">
+      
+        </div>
+      
+      </form>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+$(document).ready(function() {
+    
+    $('#guest_id').select2();
+
+
+    var guestList = [];
+
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:7000/GuestOption", // Your server endpoint URL
+        success: function(data) {
+          const jsonData = data.guest; // Parse the JSON string
+
+          $.each(jsonData, function(index, guest) {
+            guestList.push(guest);
+          });
+
+          // Display the villa list in a loop using HTML
+          for (var i = 0; i < guestList.length; i++) {
+
+            var guest_id = guestList[i].guest_id;
+            var full_name = guestList[i].full_name;
+            
+
+            var data_guest = `<option vlaue = ${guest_id}>${guest_id} ${full_name}</option> `;
+
+            $('#guest_id').append(data_guest);
+            
+          }
+
+          
+        },
+        error: function(xhr, status, err) {
+          console.error('Error:', err);
+        }
+      });
+
+
+
+
+      //for option list
+
+
+      var packageList = [];
+
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:7000/packages", // Your server endpoint URL
+        success: function(data) {
+          const jsonData = data.package; // Parse the JSON string
+
+          $.each(jsonData, function(index, package) {
+            packageList.push(package);
+          });
+
+          // Display the villa list in a loop using HTML
+          for (var x = 0; x < packageList.length; x++) {
+
+            var package_name = packageList[x].package_name;
+            var package_code = packageList[x].package_code;
+
+            var data_package = `<option value = ${package_code}>${package_name}</option>`;
+
+            $('#package').append(data_package);
+            
+          }
+
+          
+        },
+        error: function(xhr, status, err) {
+          console.error('Error:', err);
+        }
+      });
+
+
+
+
+      var guestList1 = [];
+      var events = [];
+
+
+
+      $.ajax({
+        type:"GET",
+        url:"http://localhost:7000/GuestTable",
+        success:function(data){
+          const jsonData = data.guest;
+
+          $.each(jsonData, function(index, guest) {
+            guestList1.push(guest);
+          });
+
+          for (var x = 0; x < guestList1.length; x++) {
+
+            var guest_id = guestList1[x].guest_id;
+            var full_name = guestList1[x].full_name;
+            var check_in_datetime = guestList1[x].check_in_datetime;
+            var check_out_datetime = guestList1[x].check_out_datetime;
+            var length_stay = guestList1[x].length_stay;
+            var guest_status = guestList1[x].guest_status;
+            var transaction_id2 = guestList1[x].transaction_id2;
+
+            var start = new Date(check_in_datetime);
+            var end = new Date(check_out_date);
+
+
+
+            events.push({title:full_name, start:check_in_datetime, end:check_out_datetime})
+           
+
+            var guestData = `
+
+                    <tr>
+                      <td>${guest_id}</td>
+                      <td>${full_name}</td>
+                      <td>${check_in_datetime}</td>
+                      <td>${check_out_datetime}</td>
+                      <td>${length_stay} Day/s</td>
+                      <td>${guest_status}</td>
+                      <td><button type="button" value=${transaction_id2} id="guest_view">View Guest</button></td>
+                    </tr>
+                    
+                    `;
+
+                    $('#guestBody').append(guestData);
+
+            
+
+          }
+
+          console.log(events);
+
+          var GuestTable = new DataTable("#GuestTable");
+
+          $('#calendar').fullCalendar({
+                                                    // put your options and callbacks here
+                                                    selectable: true,
+                                                    selecHelpre: true,
+                                    
+                                                    /*events:[
+                                                        {
+                                                            title: "hdb ychad",
+                                                            start: '2024-11-24',
+                                                            end: '2024-11-26'
+                                                        }
+                                                    ],*/
+                                    
+                                                    events:events,
+                                                    
+                                                    header:{
+                                                        right:'prev, today, next'
+                                                    },
+                                    
+                                                    buttonText:{
+                                                        today: 'TODAY',
+                                                        month: 'MONTH',
+                                                        week: 'WEEK',
+                                                        day: 'DAY',
+                                                        list: 'LIST'
+                                                    }
+                                    
+                                                })
+
+          
+
+        },
+
+        error:function(xhr, status, err){
+          console.error("Error:", err)
+        }
+
+      });
+  
+  
+    });  
+
+
+$(document).on('submit', '#SubmitBooking', function(e){
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    object={}
+
+    var formData = new FormData(this);
+
+    formData.forEach((value, key) => object[key] = value);
+
+    var txt = JSON.stringify(object);
+
+    console.log(txt);
+
+    $.ajax({
+                    url:"http://localhost:7000/InsertBooking",
+                    type:"POST",
+                    data:txt,
+                    contentType:'application/json',
+                    success: function(data){
+                        alert(data.message);
+                        console.log(data);
+                        $('#SubmitBooking')[0].reset();
+                        //location.reload();
+                        //alert(data.message)
+                    },
+                    
+                    error: function(xhr, status, error){
+                        alert(error);
+                    }
+
+                })
+
+    });
+
+    $(document).on('click', '#guest_view', function(e){
+
+      const transaction_id2 = $(this).val();
+      const json_data = {"transaction_id2":transaction_id2};
+      const final_data = JSON.stringify(json_data);
+      //console.log(transaction_id2);
+      $.ajax({
+        url:"http://localhost:7000/ViewGuest",
+        method: "POST",
+        data: final_data,
+        contentType:"application/json",
+        success: function(data){
+
+          var full_name = data.full_name;
+          var guest_id = data.guest_id;
+          var  package = data. package;
+          var guest_status = data.guest_status;
+          var check_in_datetime = data.check_in_datetime;
+          var check_out_datetime = data.check_out_datetime;
+          var length_stay = data.length_stay;
+          var transaction_id2 = data.transaction_id2;
+          var current_stay = data.current_stay;
+          var current_bill = data.current_bill;
+
+          console.log(full_name);
+
+          var page = 'guestView';
+          $.ajax({
+            url: page+'.html',
+            method: 'GET',
+            success: function(data1){
+
+              $('.container').html(data1);
+              $("#full_name").html(full_name);
+              $("#guest_id").html(guest_id);
+              $("#package").html(package);
+              $("#guest_status").html(guest_status);
+              $("#check_in_datetime").html(check_in_datetime);
+              $("#check_out_datetime").html(check_out_datetime);
+              $("#length_stay").html(length_stay);
+              $("#transaction_id2").html(transaction_id2);
+              $("#guest_id2").val(guest_id);
+              $("#full_name2").val(full_name);
+              $("#transaction_id2_2").val(transaction_id2);
+              $("#package2").val(package);
+              $("#transaction_update").val(transaction_id2);
+              
+              
+
+            },
+
+            error: function(){
+
+            }
+          })
+
+        },
+        error:function(xhr){
+          
+        }
+
+      });
+      
+
+    });
+
+
+
+    //modal JS
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+
+    function checkInputNumber(paxNo){
+
+      var txt=$("#package").val();
+
+      console.log(paxNo);
+    
+
+      console.log(txt);
+
+      var no_of_person = JSON.stringify({no_of_person:paxNo, package_code:txt});
+
+      $.ajax({
+
+        url:"http://localhost:7000/check_no_pax",
+        type:"POST",
+        data:no_of_person,
+        contentType:'application/json',
+        success:function(data2){
+
+          var numData = data2.no_of_person;
+          
+          console.log(numData);
+
+          if(paxNo > numData){
+
+            $("#no_pax").val("");
+
+           alert("The package can only handle "+numData+" Person/s")
+           
+
+          }
+
+          
+
+        },
+
+        error: function(xhr){
+
+        }
+
+      });
+
+    }
+
+    
+</script>

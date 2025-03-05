@@ -1,0 +1,269 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link href="https://cdn.datatables.net/v/dt/dt-2.2.1/datatables.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.datatables.net/v/dt/dt-2.2.1/datatables.min.js"></script>
+<link href="css/fullcalendar.min.css" rel="stylesheet" />
+    <script src="js/moment.js"></script>
+    <script src="js/fullcalendar.min.js"></script>
+        <style>
+
+            .flex-container{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 50px;
+                flex-wrap: wrap;
+                align-content: space-evenly;
+                
+            }
+
+            .villa1{
+                display: flex;
+                flex-direction: column;
+                border-style: solid;
+                font-size: 50px;
+                padding-top: 100px;
+                padding-bottom: 100px;
+                padding-left: 100px;
+                padding-right: 100px;
+                margin-top: 50px;
+                gap: 20px;
+            }
+
+          
+
+            .villa2{
+                display: flex;
+                flex-direction: column;
+                border-style: solid;
+                font-size: 50px;
+                padding-top: 100px;
+                padding-bottom: 100px;
+                padding-left: 100px;
+                padding-right: 100px;
+                margin-top: 50px;
+                gap: 20px;
+            }
+
+            .villa3{
+                display: flex;
+                flex-direction: column;
+                border-style: solid;
+                font-size: 50px;
+                padding-top: 100px;
+                padding-bottom: 100px;
+                padding-left: 100px;
+                padding-right: 100px;
+                margin-top: 50px;
+                gap: 20px;
+            }
+
+            .villa1>div{
+                border-style: solid;
+                padding: 20px;
+            }
+
+            .villa2>div{
+                border-style: solid;
+                padding: 20px;
+            }
+
+            .villa3>div{
+                border-style: solid;
+                padding: 20px;
+            }
+
+        </style>
+
+    </head>
+    <title>Room plotting</title>
+
+    <body>
+        <div class="flex-container" id="villas">
+
+            
+           
+            <!--<div class="villa1" id="villa1">
+
+                <h1>Villa 1</h1>
+                
+                
+                <!--<div>Room 101</div>
+                <div>Room 102</div>
+                <div>Room 103</div>
+                <div>Room 104</div>
+
+              
+                
+            </div>
+            
+            <div class="villa2" id="villa2">
+
+                <h1>Villa 2</h1>
+
+                <!--<div>Room 201</div>
+                <div>Room 202</div>
+                <div>Room 203</div>
+                <div>Room 204</div>
+
+            </div>
+            
+            <div class="villa3" id="villa3">
+
+                <h1>Villa 3</h1>
+
+                <!--<div>Room 301</div>
+                <div>Room 302</div>
+                <div>Room 303</div>
+                <div>Room 304</div>
+
+            </div>-->
+        
+        </div>
+    </body>
+    <script>
+
+    $(document).ready(function() {
+
+        var plotList = [];
+        var villaList = [];
+        var roomlistPlotting = [];
+        var newSetVilla = [];
+
+        $.ajax({
+            type:"GET",
+            url:"http://localhost:7000/roomListPlot",
+            success: function(data){
+                var roomData = data.toplotRoom; 
+                
+                $.each(roomData, function(index, room) {
+                    plotList.push(room);
+                });
+
+                //first get room data
+
+                for(var room_count = 0; room_count<roomData.length; room_count++){
+
+                    var room_name = roomData[room_count].room_name;
+                    var villa_id = roomData[room_count].villa_id;
+                    var room_status = roomData[room_count].room_status;
+                    var villa_name = roomData[room_count].villa_name;
+
+                    console.log(villa_name);
+                    villaList.push(villa_name);
+                    roomlistPlotting.push(({"room_name":room_name, "villa_id":villa_id, "room_status":room_status}));
+
+                }
+
+
+                //first get room data
+
+
+                //second get the villa data and remove duplicate
+
+                function removeDuplicate(arr){
+                    return[...new Set(arr)];
+                }
+
+
+
+                console.log(removeDuplicate(villaList))
+
+
+                //second get the villa data and remove duplicate
+
+                //iterate trough the cleaned list then add it to DOM and push to newSet of villa list
+
+                for(var x = 0; x < removeDuplicate(villaList).length; x++){
+
+                    console.log(removeDuplicate(villaList)[x]);
+
+                    var villa_name = removeDuplicate(villaList)[x];
+
+                    console.log(villa_name.replace(/\s/g, ''));
+
+                    var villa_id_name = villa_name.replace(/\s/g, '')
+
+                    newSetVilla.push(villa_id_name);
+
+                    var to_append = `
+
+                    <div class = ${villa_id_name} id = "${villa_id_name}">
+
+                        <h1>${villa_id_name}</h1>
+                        
+                    </div>
+                    `;
+                    
+                    $("#villas").append(to_append);
+
+                }
+
+                 //iterate trough the cleaned list then add it to DOM and push to newSet of villa list
+
+                
+
+                 //loop to new set of villa and add DOOM of room
+
+               
+
+                    for(var b = 0; b<newSetVilla.length; b++){
+
+                        for(var z = 0; z<roomlistPlotting.length; z++){
+
+                            var room_name = roomlistPlotting[z].room_name;
+                            var villa_id = roomlistPlotting[z].villa_id.replace(/\s/g, '');
+                            var room_status = roomlistPlotting[z].room_status;
+
+                            if(villa_id == newSetVilla[b]){
+
+                                    $("#"+newSetVilla[b]).append(`<div id=${room_name.replace(/\s/g, '')}>${room_name}</div>`);
+
+                                    }
+                        }
+
+                    }
+
+                console.log(newSetVilla);
+
+
+                //loop to new set of villa and add DOM of room
+
+                //last is to iterate to rooms and set color background to yellow and red
+
+                for(var c = 0; c < roomlistPlotting.length; c++){
+
+                    var room_status = roomlistPlotting[c].room_status;
+                    var room_name = roomlistPlotting[c].room_name;
+
+                    if(room_status == 'inactive'){
+                        $("#"+room_name.replace(/\s/g, '')).css("background-color", "red");
+                        console.log("i")
+                    }
+
+                    else{
+                        $("#"+room_name.replace(/\s/g, '')).css("background-color", "yellow");
+                        console.log("a")
+                    }
+
+                }
+
+                //last is to iterate to rooms and set color background to yellow and red
+
+            
+                
+               
+
+            },
+            error:function(xhr, status, err){
+
+              console.log(err)
+            }
+        });
+    });
+
+    </script>
+</html>
