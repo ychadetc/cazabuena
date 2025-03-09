@@ -227,15 +227,30 @@ img{
 		swtch1.style.display = "block"
 	});
 
-	btnLogin.addEventListener('click', function(){
-		window.location.href = 'index.html';
-	});
+	//btnLogin.addEventListener('click', function(){
+		//window.location.href = 'index.html';
+	//});
 </script>
 </body>
 
 <!--Script for login-->
 
+
+
 <script>
+
+$(document).ready(function() {
+	// Check if the session exists
+	$.get("http://localhost:7000/check-session", function(data) {
+		if (data.authenticated) {
+			window.location.href = "home.html";
+		}
+
+	});
+
+	// Logout function
+ 
+});
 
             
 </script>

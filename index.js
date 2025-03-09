@@ -886,7 +886,7 @@ app.post("/login", (req, res) => {
 app.get("/logout", (req, res)=>{
 
   req.session.destroy();
-  console.log("session cleared")
+  res.redirect('/index.html');
 
 });
 
