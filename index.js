@@ -183,6 +183,7 @@ app.post("/InsertBooking", (req, res)=>{
     var guest_id = req.body.guest_id;
     var special_request = req.body.special_request;
     var guest_status = 'PENDING';
+    var entry_by = req.body.entry_by;
 
     var parsedDate_in = new Date(check_in_date);
     var parsedDate_out = new Date(check_out_date);
@@ -369,9 +370,9 @@ app.post("/InsertBooking", (req, res)=>{
 
 
          var sql_insert_book = `INSERT INTO guest_table (guest_id, check_in_datetime, check_out_datetime,
-         no_pax, package, special_request, length_stay, guest_status, full_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+         no_pax, package, special_request, length_stay, guest_status, full_name, entry_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             connection.query(sql_insert_book, [guest_id, check_in_datetime2, check_out_datetime2,
-              no_pax, package, special_request, length_stay, guest_status, full_name], (err, results) => {
+              no_pax, package, special_request, length_stay, guest_status, full_name, entry_by], (err, results) => {
                 if (err) {
                     console.error(err);
                     res.status(500).send('Error inserting data');
@@ -926,7 +927,7 @@ app.get('/get-session', (req, res) => {
 
 
 app.get('/check-session', (req, res) => {
-  res.json({ authenticated: !!req.session.user });
+  res.json({ authenticated: !!req.session.user, user:req.session.user });
 });
 
 
