@@ -1,0 +1,594 @@
+<html>
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link href="https://cdn.datatables.net/v/dt/dt-2.2.1/datatables.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.datatables.net/v/dt/dt-2.2.1/datatables.min.js"></script>
+<script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/fontawesome.min.js" integrity="sha512-j12pXc2gXZL/JZw5Mhi6LC7lkiXL0e2h+9ZWpqhniz0DkDrO01VNlBrG3LkPBn6DgG2b8CDjzJT+lxfocsS1Vw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link href="css/fullcalendar.min.css" rel="stylesheet" />
+    <script src="js/moment.js"></script>
+    <script src="js/fullcalendar.min.js"></script>
+
+    <style>
+
+           .parent-container{
+                display: flex;
+                flex-direction: row;
+                gap: 50px;
+                align-content: space-evenly;
+               
+            }
+
+       
+
+            .container{
+                display: flex;
+                flex-direction: column;
+                gap: 60px;
+                width: 100%;
+                border: 1px solid white;
+                box-shadow: 5px 5px 9px 1px rgba(84, 103, 116, 0.4);
+                margin-top: 75px;
+               
+                
+                
+               
+            
+            }
+
+        
+
+            ul {
+
+            position: -webkit-sticky; /* Safari */
+            position: sticky;
+            top: 0;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: rgba(58, 169, 245, 1);
+            border: 1px solid white;
+            box-shadow: 5px 5px 9px 1px rgba(84, 103, 116, 0.4);
+	        
+            
+            }
+
+            li a {
+            
+            display: block;
+            color: #000;
+            padding: 50px 16px;
+            text-decoration: none;
+            font-size: 20px;
+
+            }
+
+            /* Change the link color on hover */
+            li a:hover {
+            background-color: #555;
+            color: white;
+            }
+           
+
+
+
+
+
+
+
+            .flex-container{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+                align-content: space-evenly;
+                
+            }
+
+            .villa1{
+                display: flex;
+                flex-direction: column;
+                border-style: solid;
+                font-size: 50px;
+                padding-top: 100px;
+                padding-bottom: 100px;
+                padding-left: 100px;
+                padding-right: 100px;
+                margin-top: 50px;
+                gap: 20px;
+            }
+
+          
+
+            .villa2{
+                display: flex;
+                flex-direction: column;
+                border-style: solid;
+                font-size: 50px;
+                padding-top: 100px;
+                padding-bottom: 100px;
+                padding-left: 100px;
+                padding-right: 100px;
+                margin-top: 50px;
+                gap: 20px;
+            }
+
+            .villa3{
+                display: flex;
+                flex-direction: column;
+                border-style: solid;
+                font-size: 50px;
+                padding-top: 100px;
+                padding-bottom: 100px;
+                padding-left: 100px;
+                padding-right: 100px;
+                margin-top: 50px;
+                gap: 20px;
+            }
+
+            .villa1>div{
+                border-style: solid;
+                padding: 20px;
+            }
+
+            .villa2>div{
+                border-style: solid;
+                padding: 20px;
+            }
+
+            .villa3>div{
+                border-style: solid;
+                padding: 20px;
+            }
+
+            .logo{
+                display: flex;
+                flex-direction: row;
+                
+                gap: 30px;
+                align-content: space-evenly;
+                
+                
+                box-shadow: 5px 5px 9px 1px rgba(84, 103, 116, 0.4);
+                
+
+            }
+
+            img{
+                height: 70px;
+                width: 80px;
+                background-color: rgba(58, 169, 245, 1);
+	            
+                
+
+            }
+
+           .h2{
+            font-size: 30px;
+           }
+
+           .topbar{
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            
+            border-style: solid;
+            position: fixed;
+            height: 60px;
+            width: 100%;
+            margin-bottom: 70px;
+            margin-left: 300px;
+            padding-bottom: 16px;
+            background-color: rgba(58, 169, 245, 1);
+            border: 1px solid white;
+            box-shadow: 5px 5px 9px 1px rgba(84, 103, 116, 0.4);
+           }
+
+           .dropbtn{
+            background-color: green;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 100%;
+           }
+
+          
+
+           .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            }
+
+            .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            }
+
+            .dropdown-content a:hover {background-color: #f1f1f1}
+
+            .dropdown:hover .dropdown-content {
+            display: block;
+            }
+
+            .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+            }
+
+
+
+
+            
+
+    </style>
+</head>
+
+
+
+   
+
+            <div class="parent-container">
+
+                        <div class="left-sidebar">
+
+                            <div class="logo">
+
+                                <div class="right">
+                                    <img src="./assets/right-png.png">
+                                </div>
+    
+
+                            <div class="left">
+
+                                <h2>Cazabuena</h2>
+
+                            </div>
+                            
+                            
+                           
+                           
+                           
+                            </div>
+                               
+                            <ul>
+                                <!--<div class="menu">-->
+                                    
+                                    
+                                    <li><a href="#" data-page="guest" class="nav-link"><i class="fa-solid fa-circle-user fa-2x"></i> Guest Registration</a></li>
+                                
+                               <!--</div>--> 
+                                    
+                                    <li><a href="#" data-page="villa" class="nav-link"><i class="fa-solid fa-house fa-2x"></i> Villa Registration</a></li>
+                                    <li><a href="#" data-page="room" class="nav-link"><i class="fa-solid fa-bed fa-2x"></i> Room Registration</a></li>
+                                    <li><a href="#" data-page="package" class="nav-link"><i class="fa-solid fa-cube fa-2x"></i> Package Registration</a></li>
+                                    <li><a href="#" data-page="book" class="nav-link"><i class="fa-solid fa-calendar-days fa-2x"></i> Booking</a></li>
+                                    <!-- Other navigation items can be added here -->
+                                </ul>
+
+                        </div>
+
+                        <div class="topbar">
+                            
+                            <div class="user">User</div>
+                            
+                            <div class="dropdown">
+                            
+                            <button class="dropbtn">Menu</button>
+                            
+                                <div class="dropdown-content">
+                                    <a href="http://localhost:7000/logout">LOGOUT</a>
+                                    
+                                </div>
+                             
+                             </div>
+                        </div>
+
+                    
+                        <div class="container">
+                            
+                            <!--<h1>Forms goes here</h1>-->
+
+                            <div class="flex-container" id="villas">
+
+                                <input type="hidden" name="user_name" id="user_name">
+                            
+                            </div>
+
+                            
+                        </div>
+
+            </div>
+
+            <input type="hidden" name="entry_by" id="entry_by">
+    
+
+
+
+</html>
+
+<script>
+        
+       $(document).ready(function(){
+
+        $.ajax({
+            method:"GET",
+            url:"http://localhost:7000/check-session",
+            async:true,
+            success:function(data3){
+                var user = data3.user;
+                $("#entry_by").val(user);
+
+            },
+            error:function(xhr){
+
+            }
+
+        });
+    
+    function loadPage(page){
+        $.ajax({
+            url: page+'.html',
+            method: 'GET',
+            async: true,
+            replace: true,
+            success: function(data){
+                //$('#content').replaceWith(data);
+            
+                //$('#content').empty();
+               $('.container').html(data);
+                //history.pushState({page:page}, '', page);
+                
+
+        
+            },
+            error: function(){
+                $('.container').html('<p>Error loading content.</p>');
+            }
+
+        });
+    }
+
+    $('.nav-link').click(function(){
+        var page = $(this).data('page');
+        loadPage(page);
+    });
+
+});
+</script>
+
+
+
+<script>
+
+    function loadIndex(){
+
+        $(document).ready(function() {
+
+            var plotList = [];
+            var villaList = [];
+            var roomlistPlotting = [];
+            var newSetVilla = [];
+
+            $.ajax({
+                type:"GET",
+                url:"http://localhost:7000/roomListPlot",
+                success: function(data){
+                    var roomData = data.toplotRoom; 
+                    
+                    $.each(roomData, function(index, room) {
+                        plotList.push(room);
+                    });
+
+                    //first get room data
+
+                    for(var room_count = 0; room_count<roomData.length; room_count++){
+
+                        var room_name = roomData[room_count].room_name;
+                        var villa_id = roomData[room_count].villa_id;
+                        var room_status = roomData[room_count].room_status;
+                        var villa_name = roomData[room_count].villa_name;
+
+                        console.log(villa_name);
+                        villaList.push(villa_name);
+                        roomlistPlotting.push(({"room_name":room_name, "villa_id":villa_id, "room_status":room_status}));
+
+                    }
+
+
+                    //first get room data
+
+
+                    //second get the villa data and remove duplicate
+
+                    function removeDuplicate(arr){
+                        return[...new Set(arr)];
+                    }
+
+
+
+                    console.log(removeDuplicate(villaList))
+
+
+                    //second get the villa data and remove duplicate
+
+                    //iterate trough the cleaned list then add it to DOM and push to newSet of villa list
+
+                    for(var x = 0; x < removeDuplicate(villaList).length; x++){
+
+                        console.log(removeDuplicate(villaList)[x]);
+
+                        var villa_name = removeDuplicate(villaList)[x];
+
+                        console.log(villa_name.replace(/\s/g, ''));
+
+                        var villa_id_name = villa_name.replace(/\s/g, '')
+
+                        newSetVilla.push(villa_id_name);
+
+                        var to_append = `
+
+                        <div class = ${villa_id_name} id = "${villa_id_name}">
+
+                            <h1>${villa_id_name}</h1>
+                            
+                        </div>
+                        `;
+                        
+                        $("#villas").append(to_append);
+
+                    }
+
+                    //iterate trough the cleaned list then add it to DOM and push to newSet of villa list
+
+                    
+
+                    //loop to new set of villa and add DOM of room
+
+                
+
+                        for(var b = 0; b<newSetVilla.length; b++){
+
+                            for(var z = 0; z<roomlistPlotting.length; z++){
+
+                                var room_name = roomlistPlotting[z].room_name;
+                                var villa_id = roomlistPlotting[z].villa_id.replace(/\s/g, '');
+                                var room_status = roomlistPlotting[z].room_status;
+
+                                if(villa_id == newSetVilla[b]){
+
+                                        $("#"+newSetVilla[b]).append(`<div id=${room_name.replace(/\s/g, '')}>${room_name}</div>`);
+
+                                        }
+                            }
+
+                        }
+
+                    console.log(newSetVilla);
+
+
+                    //loop to new set of villa and add DOM of room
+
+                    //last is to iterate to rooms and set color background to yellow and red
+
+                    for(var c = 0; c < roomlistPlotting.length; c++){
+
+                        var room_status = roomlistPlotting[c].room_status;
+                        var room_name = roomlistPlotting[c].room_name;
+
+                        if(room_status == 'inactive'){
+                            $("#"+room_name.replace(/\s/g, '')).css("background-color", "red");
+                            console.log("i")
+                        }
+
+                        else{
+                            $("#"+room_name.replace(/\s/g, '')).css("background-color", "yellow");
+                            console.log("a")
+                        }
+
+                    }
+
+                    //last is to iterate to rooms and set color background to yellow and red
+
+                
+                    
+                
+
+                },
+                error:function(xhr, status, err){
+
+                console.log(err)
+                }
+            });
+            });
+
+            let params = (new URL(document.location)).searchParams;
+
+            var welcome = params.get('welcome');
+            document.getElementById('user_name').value = welcome;
+
+            var welcomeJson = {"user":welcome}
+
+            var txt = JSON.stringify(welcomeJson)
+
+            console.log(welcome);
+
+            $.ajax({
+
+                type: "post",
+                url: "http://localhost:7000/set-session",
+                data: txt,
+                contentType: "application/json",
+                success: function(data1){
+
+                    console.log("Session Re set")
+
+                    console.log(data1.message);
+
+                },
+
+                error: function(xhr){
+
+                }
+
+            });
+
+    }
+
+   
+    $.ajax({
+        type: "GET",
+        url:"http://localhost:7000/checkSession",
+        success:function(data2){
+
+            console.log(data2.validation)
+
+            if(data2.validation=="session"){
+
+                loadIndex();
+
+            }
+
+            
+            if(data2.validation=="no_session"){
+                window.location.href="login.html"
+
+loadIndex();
+
+}
+
+            
+
+        },
+        error: function(xhr){
+
+        }
+    })
+   
+
+
+   //loadIndex();
+
+
+
+
+
+   
+
+    </script>

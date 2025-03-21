@@ -191,6 +191,8 @@
           <span class="close">&times;</span>
       
           <div class="flex-left-book">
+
+            <input type="hidden" name="entry_by" id="entry_by">
       
               <label for="guest_id">Select Guest</label>
               <select name="guest_id" id="guest_id">
@@ -241,6 +243,21 @@
 $(document).ready(function() {
     
     $('#guest_id').select2();
+
+    $.ajax({
+            method:"GET",
+            url:"http://localhost:7000/check-session",
+            async:true,
+            success:function(data3){
+                var user = data3.user;
+                $("#entry_by").val(user);
+
+            },
+            error:function(xhr){
+
+            }
+
+        });
 
 
     var guestList = [];
@@ -298,8 +315,9 @@ $(document).ready(function() {
 
             var package_name = packageList[x].package_name;
             var package_code = packageList[x].package_code;
+            var room_id = packageList[x].room_id;
 
-            var data_package = `<option value = ${package_code}>${package_name}</option>`;
+            var data_package = `<option value = ${package_code}>${package_name+" "+room_id}</option>`;
 
             $('#package').append(data_package);
             

@@ -3,24 +3,61 @@ const app = express();
 const port = 7000;
 const cors = require('cors');
 const mysql = require('mysql');
-const session = require('express-session')
+const session = require('express-session');
+const path = require('path');
+const FileStore = require('session-file-store')(session);
+app.use(express.static(path.join(__dirname, '../cazabuena')));
+
+
+
+/*app.use(cors({
+  origin: 'http://127.0.0.1:8080/cazabuena' // Adjust based on frontend
+  
+}))*/
+
+
+app.use(cors());
+
+
+
+/*app.use(session({
+  secret: 'yourSecretKey',
+  resave: false,
+  saveUninitialized: true
+
+}));
+*/
+
+app.use(express.json());
+
+app.use(session({
+  store: new FileStore({ path: '../sessions', logFn: function() {} }), // Store sessions in the "sessions" folder
+  secret: 'secret_key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 } // 1-day session persistence
+}));
+
+
 
 const connection = mysql.createConnection({
-    host: '',
-    user: '',
+    host: 'localhost',
+    user: 'root',
     password: '',
-    database: ''
+    database: 'cazabuena'
   })
 
-  app.use(cors());
 
   var bodyParser = require("body-parser");
 
-  //app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.urlencoded({ extended: true }));
 
   app.use(bodyParser.json());
 
 app.listen(port, ()=> console.log("server is online"));
+
+
+
 
 
 //insert villa
@@ -48,10 +85,11 @@ app.post("/InsertRoom",(req,res)=>{
   var room_name = req.body.room_name;
   var room_status = req.body.room_status;
   var location = req.body.location;
+  var villa_id = req.body.villa_id;
 
-  var sql_insert = `insert into rooms (room_name, room_status, location) values(?,?,?)`;
+  var sql_insert = `insert into rooms (room_name, room_status, location, villa_id) values(?,?,?,?)`;
 
-    connection.query(sql_insert,[room_name, room_status, location],(err, rows, fields)=>{
+    connection.query(sql_insert,[room_name, room_status, location, villa_id],(err, rows, fields)=>{
                 if (err) {
                     console.error(err);
                     res.status(500).send({ message: 'Failed to create room' });
@@ -146,6 +184,7 @@ app.post("/InsertBooking", (req, res)=>{
     var guest_id = req.body.guest_id;
     var special_request = req.body.special_request;
     var guest_status = 'PENDING';
+    var entry_by = req.body.entry_by;
 
     var parsedDate_in = new Date(check_in_date);
     var parsedDate_out = new Date(check_out_date);
@@ -332,9 +371,9 @@ app.post("/InsertBooking", (req, res)=>{
 
 
          var sql_insert_book = `INSERT INTO guest_table (guest_id, check_in_datetime, check_out_datetime,
-         no_pax, package, special_request, length_stay, guest_status, full_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+         no_pax, package, special_request, length_stay, guest_status, full_name, entry_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             connection.query(sql_insert_book, [guest_id, check_in_datetime2, check_out_datetime2,
-              no_pax, package, special_request, length_stay, guest_status, full_name], (err, results) => {
+              no_pax, package, special_request, length_stay, guest_status, full_name, entry_by], (err, results) => {
                 if (err) {
                     console.error(err);
                     res.status(500).send('Error inserting data');
@@ -779,6 +818,20 @@ app.post("/UpdateBill", (req, res)=>{
 
 });
 
+
+
+//package guest updates
+
+app.post("/GuestPackageUpdate", (req, res)=>{
+
+  var NewPackage = req.body.NewPackage;
+
+  var package = req.body.package;
+
+});
+
+//package guest updates
+
 //Updates
 
 //input checking number of pax
@@ -806,19 +859,99 @@ app.post("/check_no_pax", (req, res)=>{
 //input checking number of pax
 
 
+
+
+
+
+
+
+
+
+
+
 //session handling and authentication
 
-app.post("/login", (req, res)=>{
+app.post("/login", (req, res) => {
+  var { username, user_password } = req.body;
 
-  var username = req.body.username;
-  var user_password = req.body.user_password;
+  var sql_select_users = `SELECT * FROM users WHERE username = ? AND user_password = ?`;
 
-  console.log(username);
-  console.log(user_password);
+  connection.query(sql_select_users, [username, user_password], (err, rows2) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.send({ validation: "error" });
+    }
+
+    if (rows2.length > 0) {
+      req.session.user = username; // Set session variable
+      console.log("Session created:", req.session.user);
+
+    
+        if (err) console.error("Session save error:", err);
+        //res.send({ validation: "session", welcome: req.session.user });
+        res.redirect('/home.html');
+ 
+
+    } else {
+      console.log("No existing account");
+      res.send({ validation: "no_session" });
+    }
+  });
+});
+
+app.get("/logout", (req, res)=>{
+
+  req.session.destroy();
+  res.redirect('/index.html');
 
 });
 
 //session handling and authentication
+
+//get session everytime opening a new window
+
+app.get("/checkSession", (req, res) => {
+  console.log("Session ID:", req.sessionID);
+  console.log("Session Config:", req.session);
+  console.log("Stored Session User:", req.session.user);
+
+  if (req.session.user) {
+    res.send({ validation: "session", user: req.session.user });
+  } else {
+    res.send({ validation: "no_session" });
+  }
+});
+
+
+app.post('/set-session', (req, res) => {
+
+  var user = req.body.user;
+  req.session.user = user;
+  res.send({message:'Session set!'});
+});
+
+
+app.get('/get-session', (req, res) => {
+  if (req.session.user) {
+      res.send(`Session User: ${req.session.user}`);
+  } else { 
+      res.send('No session found.');
+  }
+});
+
+
+
+app.get('/check-session', (req, res) => {
+  res.json({ authenticated: !!req.session.user, user:req.session.user });
+});
+
+
+
+
+
+
+
+
 
 
 

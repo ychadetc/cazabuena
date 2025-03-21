@@ -168,30 +168,47 @@ img{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/fontawesome.min.js" integrity="sha512-j12pXc2gXZL/JZw5Mhi6LC7lkiXL0e2h+9ZWpqhniz0DkDrO01VNlBrG3LkPBn6DgG2b8CDjzJT+lxfocsS1Vw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
+<body class="whole">
 	<img src="./assets/pixelcut-export.jpeg">
-	<div class="form-container">
-		<div class="left part">
-			<div class="row header">
-				<h2>Login <img src="./assets/login.png"> </h2>
+
+	
+
+		<div class="form-container">
+			<div class="left part">
+				<div class="row header">
+					<h2>Login <img src="./assets/login.png"> </h2>
+				</div>
+
+				
+				
+				<div class="row row1">
+
+					
+					
+					<span>Username</span>
+
+					<form action="http://localhost:7000/login" method="POST">
+					
+					<input type="text" name="username" class="textbox" id="txtUsername">
+				</div>
+				<div class="row row2">
+					<span>Password</span>
+					<input type="Password" name="user_password" class="textbox" id="txtPassword"><img src="./assets/hide_pass.png" id="switch1">
+					<img src="./assets/show_pass.png" id="switch2" style="display: none;">
+				</div>
+				<div class="row row3">
+					<button type="submit"id="btnLogin">Login</button>
+				</div>
+
+			</form>
 			</div>
-			<div class="row row1">
-				<span>Username</span>
-				<input type="text" name="" class="textbox" id="txtUsername">
-			</div>
-			<div class="row row2">
-				<span>Password</span>
-				<input type="Password" name="" class="textbox" id="txtPassword"><img src="./assets/hide_pass.png" id="switch1">
-				<img src="./assets/show_pass.png" id="switch2" style="display: none;">
-			</div>
-			<div class="row row3">
-				<button id="btnLogin">Login</button>
+			<div class="right part">
+				<img src="./assets/right-png.png">
 			</div>
 		</div>
-		<div class="right part">
-			<img src="./assets/right-png.png">
-		</div>
-	</div>
+
+	
+
 
 <script type="text/javascript">
 	const swtch1 = document.getElementById('switch1');
@@ -210,49 +227,31 @@ img{
 		swtch1.style.display = "block"
 	});
 
-	btnLogin.addEventListener('click', function(){
-		window.location.href = 'index.html';
-	});
+	//btnLogin.addEventListener('click', function(){
+		//window.location.href = 'index.html';
+	//});
 </script>
 </body>
 
 <!--Script for login-->
 
+
+
 <script>
 
 $(document).ready(function() {
-
-	$(document).on('click', '#btnLogin', function(e){
-			e.preventDefault();
-			e.stopImmediatePropagation();
-
-
-			var username = $("#txtUsername").val();
-	var user_password = $("#txtPassword").val();
-	var login_creds = {"username":username, "user_password":user_password};
-	var txt = JSON.stringify(login_creds);
-
-	$.ajax({
-		type: "POST",
-		url: "http://localhost:7000/login",
-		data: txt,
-		contentType: "application/json",
-		success:function(data){
-
-		},
-
-		error: function(xhr){
-
+	// Check if the session exists
+	$.get("http://localhost:7000/check-session", function(data) {
+		if (data.authenticated) {
+			window.location.href = "home.html";
 		}
-		
-
 
 	});
 
-	});
-	
+	// Logout function
+ 
 });
 
-
+            
 </script>
 </html>
